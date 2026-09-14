@@ -1,0 +1,197 @@
+🎤 Customer Retention Intelligence System — Video Script
+Slide 1 — Introduction | ~20 sec
+
+“Hello everyone. Today I am going to present our Customer Retention Intelligence System.
+
+The main objective of this project is to use customer data to identify customers who are more likely to churn, and help the retention team take action before the customer leaves.
+
+In this project, we have connected data engineering, SQL, APIs, React, and machine learning into one complete workflow.”
+
+Slide 2 — Why This Matters | ~15 sec
+
+“The system is built using a customer dataset containing around 7,043 customers and 21 attributes.
+
+Around 26.5 percent of the customers in this reference dataset are churned.
+
+Instead of only looking at historical churn numbers, our goal is to help the business move towards proactive customer retention.”
+
+Slide 3 — Business Problem | ~20 sec
+
+“The main problem is that customer information can be spread across different areas such as profile, services, contract and billing.
+
+Also, knowing the overall churn percentage is not enough.
+
+A retention team needs to know which customers are at risk, why they are at risk, and which customers should be contacted first.
+
+So, the key idea is to connect data, intelligence and action.”
+
+Slide 4 — Proposed Solution | ~20 sec
+
+“To solve this, we designed a layered Customer Retention Intelligence System.
+
+First, we ingest and validate the customer data.
+
+Then we clean and curate the data, perform analytics, create customer features, and apply machine learning.
+
+Finally, the results are exposed through APIs and presented through the React dashboard.
+
+We also keep an explainable rule-based layer, so the business can understand the reason behind a high-risk customer.”
+
+Slide 5 — What the Retention Team Can Do | ~20 sec
+
+“From the user's point of view, the workflow is very simple.
+
+First, the user can see the overall churn picture.
+
+Second, they can search for a specific customer.
+
+Third, they can view a list of high-risk customers and prioritize their outreach.
+
+And finally, they can enter customer information and get an individual churn risk prediction.”
+
+Slide 6 — Data & Business Signals | ~20 sec
+
+“The project uses the IBM Telco churn dataset.
+
+It contains customer information such as tenure, contract, internet service, payment method and monthly charges.
+
+We also handle important data quality issues. For example, the TotalCharges field is stored as text and contains some blank values.
+
+These issues are handled during the data cleaning stage before the data is used for analytics or machine learning.”
+
+🖥️ FRONTEND SECTION
+Slide 7 — Dashboard | ~15 sec
+
+“This is the main dashboard view of the application.
+
+It gives the retention or business team a quick overview of total customers, churned customers and the overall churn rate.
+
+It also provides churn breakdowns based on important customer segments.”
+
+[While speaking, keep your dashboard screenshot visible.]
+
+Slide 8 — Customer Search | ~15 sec
+
+“The customer search page allows a support or retention user to enter a customer ID and immediately retrieve the customer's profile.
+
+The profile includes information such as tenure, contract, internet service, monthly charges and churn status.
+
+This information is retrieved through the FastAPI backend.”
+
+Slide 9 — High-Risk Customers | ~15 sec
+
+“This page is particularly useful for the retention team.
+
+It provides a list of high-risk customers along with details such as customer ID, tenure, monthly charges, contract type and the reason for the risk.
+
+The table also supports sorting and loading more customers, making it easier to prioritize outreach.”
+
+Slide 10 — Churn Prediction | ~15 sec
+
+“The churn prediction page provides an individual prediction workflow.
+
+The user provides inputs such as tenure, monthly charges, contract type and service count.
+
+The system then returns a risk score and churn prediction through the prediction API.”
+
+⚙️ TECHNICAL SECTION
+Slide 11 — Technical Architecture | ~20 sec
+
+“Now moving to the technical architecture.
+
+At the frontend, we use React.
+
+The backend is built using FastAPI, Pydantic and SQLAlchemy.
+
+The data layer contains staging tables, curated tables, ML features and the customer risk table.
+
+Data engineering handles ingestion, cleaning, feature creation, quality checks and orchestration.
+
+Finally, the machine learning layer performs prediction and batch scoring.”
+
+Slide 12 — Data Engineering & Quality | ~25 sec
+
+“The data pipeline starts with the incoming customer CSV.
+
+First, we validate the schema. Then the data is loaded into staging.
+
+After that, we clean the data using the CustomerCleaner and create trusted tables.
+
+Next, we generate six engineered features and run data quality checks.
+
+These checks include null checks, range checks, allowed values, row counts and duplicate checks.
+
+If a critical quality check fails, the pipeline stops instead of sending bad data to the ML model.”
+
+Slide 13 — Data Model & APIs | ~20 sec
+
+“The database is organized into logical tables such as customers, contract, payment, customer account and ML feature tables.
+
+FastAPI provides different endpoints for the application.
+
+For example, we have an endpoint for customer search, one for churn summary, one for high-risk customers, one for ML features, and another endpoint for churn prediction.
+
+This keeps the frontend separated from the database and business logic.”
+
+Slide 14 — Machine Learning | ~25 sec
+
+“For machine learning, we first create meaningful customer features such as tenure bucket, service count, high charge flag, long-term customer flag, streaming bundle and auto-pay flag.
+
+We then compare Logistic Regression and Decision Tree models.
+
+The models are evaluated using the F1 score for the churn class rather than looking only at accuracy.
+
+We also look at feature importance and coefficients to understand what is influencing churn.
+
+Finally, the model can score customers individually through the API or score all customers in batch.”
+
+Slide 15 — Explainability & Reliability | ~25 sec
+
+“An important part of this project is trust.
+
+We don't want to provide only a prediction without context.
+
+The system provides explainable risk reasons and ML feature interpretation.
+
+We also have validation, logging, audit information and quality reports.
+
+Critical data-quality failures can stop the pipeline, and the API also includes a basic authentication mechanism.
+
+So the system is designed not just to predict, but also to be observable, explainable and reliable.”
+
+Slide 16 — Technology Stack | ~15 sec
+
+“The main technologies used are Python and Pandas for data processing, SQL and SQLAlchemy for the database layer, FastAPI and Pydantic for APIs, React and Axios for the frontend, Airflow for orchestration, PySpark for scalable processing, and Scikit-learn with Joblib for machine learning.”
+
+Slide 17 — End-to-End Flow | ~20 sec
+
+“If we look at the complete flow, the customer extract first goes through data-quality validation.
+
+It then becomes trusted data in the database.
+
+From this data, we create ML features and generate risk scores.
+
+These results are then consumed by the dashboard, customer support workflows and prediction APIs.
+
+The customer risk table can also become a foundation for a future AI assistant.”
+
+💼 BUSINESS VALUE
+Slide 18 — Business Value & Future | ~20 sec
+
+“From a business perspective, the system provides three immediate benefits: visibility, prediction and trust.
+
+The next step could be adding real-time customer signals, recommending the best retention action, and eventually building an AI assistant using the customer risk information.
+
+The larger goal is to move from simply knowing who is at risk to knowing what action should be taken next.”
+
+Slide 19 — Closing | ~20 sec
+
+“To conclude, this project brings together customer data, analytics, machine learning and a user-friendly application into one retention workflow.
+
+The idea is simple:
+
+Understand the customer, identify the highest-risk customers, explain the risk, and prioritize the next conversation.
+
+So, this system provides a foundation for moving from churn data to retention action.
+
+Thank you.”
