@@ -1,0 +1,226 @@
+🎤 4–5 Minute Project Presentation Script
+Slide 1 — Introduction
+
+“Hello everyone. Today I am going to present my Telecom Network Analytics project.
+
+The main goal of this project is to convert large amounts of raw telecom network activity into useful operational intelligence.
+
+The solution combines data engineering, machine learning, APIs, and a React-based NOC dashboard.
+
+It helps an operator understand what is happening in the network, identify unusual activity, investigate specific grids, and also look at future risk.
+
+I will also briefly explain the technical architecture behind the solution and the future AI integration planned for this platform.”
+
+Slide 2 — What the platform delivers
+
+“Starting with the overall value of the platform, we are working with around 10,000 Milan grid cells.
+
+Instead of asking an operator to go through raw network data, the platform provides multiple operational views such as network overview, grid exploration, hotspots, alerts, and predictive risk.
+
+The system combines three main decision signals.
+
+First, rule-based alerts tell us what is happening right now.
+
+Second, anomaly detection helps us understand whether the current activity is unusual compared with historical behavior.
+
+And third, machine learning provides a predictive risk signal for future high activity.
+
+So the main objective is to move from raw data to a clear operational decision.”
+
+Slide 3 — The problem
+
+“The problem we are solving is that telecom networks generate a very large amount of hourly activity data.
+
+Looking at high activity alone is not enough, because a high value may simply be normal for a particular time or location.
+
+We need historical context to understand whether something is actually unusual.
+
+We also need to know whether the data itself is fresh and reliable before making a decision.
+
+So this project brings these different pieces together into one operational view.
+
+An operator can start with the overall network, identify an area of interest, investigate the grid, compare historical behavior, and then look at predictive risk.”
+
+Slide 4 — Architecture
+
+“From the technical side, the solution is built as a layered architecture.
+
+We start with the daily Milan telecom activity files and the static grid GeoJSON.
+
+The data then goes through PySpark processing, where it is cleaned, standardized, aggregated at grid and hourly level, and enriched with geographic information.
+
+The processed data is stored in the analytics warehouse.
+
+On top of this, we calculate the required features and perform machine learning and anomaly analysis.
+
+FastAPI exposes these capabilities through reusable REST endpoints.
+
+Finally, the React frontend consumes these APIs and provides the NOC dashboard.
+
+The important design principle here is separation of responsibilities: data processing prepares the evidence, machine learning produces the risk signal, and the future Claude layer will reason over that evidence.”
+
+Slide 5 — Data Engineering
+
+“Looking specifically at the data engineering pipeline, the process starts with ingestion and validation of the daily files.
+
+We then use PySpark to clean the data and aggregate it into a canonical grid-by-hour structure.
+
+The Milan geometry is also added so that network activity can be visualized spatially.
+
+The final data is stored in an analytics-friendly format and made available to the downstream services.
+
+One important part of this pipeline is maintaining a consistent data grain and reporting timestamp.
+
+This makes sure that the frontend, machine learning models, and APIs are all working with the same understanding of time and network activity.”
+
+Slide 6 — Intelligence
+
+“The intelligence layer has three complementary parts.
+
+The first is rule-based alerting, which identifies conditions such as high activity, activity spikes, and activity drops.
+
+The second is the anomaly baseline. This compares current behavior with the historical behavior expected for that grid and time.
+
+The third is ML3 predictive risk.
+
+The machine learning model uses historical network features to estimate the probability of the defined high-activity condition in the next hourly interval.
+
+One important point is that the risk score is treated as an attention signal. It does not directly mean that there is network congestion or a confirmed fault.
+
+This distinction is important for responsible operational use of machine learning.”
+
+Slide 7 — FastAPI
+
+“The FastAPI layer acts as the bridge between the analytics backend and the frontend.
+
+We have separate endpoints for the network summary, grid activity, hotspots, alerts, ML features, risk prediction, pipeline health, and grid location.
+
+This means the React application does not need to contain the actual analytics logic.
+
+Instead, it consumes well-defined API contracts.
+
+This also makes the backend reusable for future integrations, including the planned AI layer.”
+
+Slide 8 — Product Experience
+
+“Now coming to the frontend, the main focus was to make this feel like an actual NOC control room rather than a collection of charts.
+
+The Network Overview gives the operator the high-level picture.
+
+From there, Grid Explorer allows the operator to select a particular grid and understand its hourly activity, including calls, SMS, internet activity, and total activity.
+
+So the basic workflow is: first understand what is happening across the network, and then drill down into the specific location.”
+
+Slide 9 — Spatial Operations
+
+“The next part is the spatial operations view.
+
+Hotspots help identify areas with unusually high activity, while Alerts highlight operational conditions that need attention.
+
+These results are connected to the Milan grid geometry on the map.
+
+The map uses different visual states such as normal, attention, and high, so an operator can quickly understand where the important areas are.
+
+The lists also support filtering and selection, so the operator can move from a record directly to its grid context.”
+
+Slide 10 — Investigation
+
+“We then extended the dashboard from simply showing alerts to actually supporting investigation.
+
+When an operator finds an alert, the goal is to answer: what happened here?
+
+The investigation connects the alert with the grid, its activity, baseline behavior, historical context, and comparative evidence.
+
+So instead of only saying that an alert exists, the system provides the context required for the operator to understand it and decide what to investigate next.”
+
+Slide 11 — Comparative Analytics
+
+“Another important capability is comparison.
+
+An operator can compare different grids or different time periods.
+
+This helps answer questions such as whether one grid is behaving differently from another, whether a spike is persistent, and whether the current peak is actually unusual for that particular hour.
+
+This is useful because network behavior can vary significantly by location and time.”
+
+Slide 12 — Predictive Risk + Pipeline Health
+
+“The predictive risk view adds a forward-looking perspective.
+
+It provides the risk score, risk level, prediction timestamp, and model version.
+
+Alongside this, pipeline health provides information about whether the underlying data and features are healthy and current.
+
+This is important because a prediction is only useful when the evidence feeding it is trustworthy.
+
+So the platform considers both the prediction and the health of the data behind that prediction.”
+
+Slide 13 — Investigation Workflow
+
+“When we put all these capabilities together, the workflow becomes much more useful.
+
+An operator can start with an alert and ask what happened.
+
+They can compare grids and time periods to understand whether the behavior is persistent.
+
+They can then look at predictive risk and connect that risk back to supporting network evidence.
+
+Importantly, these workflows reuse the same underlying data and APIs rather than creating separate analytics logic for every screen.”
+
+Slide 14 — Technical Stack
+
+“From an implementation perspective, the project uses Python and PySpark for data engineering, Parquet and the analytics warehouse for storage, and Airflow for orchestration.
+
+FastAPI is used for the service layer.
+
+The frontend is built using React and Vite, with Leaflet for the Milan network map and Recharts for activity visualization.
+
+For machine learning, Scikit-learn is used for the decision tree model and anomaly baseline.
+
+The architecture is designed so that these components remain independent and reusable.”
+
+Slide 15 — End-to-End Demonstration
+
+“If I demonstrate the complete solution, the workflow is very straightforward.
+
+I start with the Network Overview to understand the current situation.
+
+Then I move to Hotspots or Alerts to identify where I should focus.
+
+I drill into Grid Explorer to understand the detailed activity.
+
+I can compare it with another grid or historical period.
+
+Then I can use predictive risk to understand what may happen next.
+
+Pipeline Health helps confirm that the underlying evidence is reliable.
+
+Finally, the investigation workflow brings all of this information together to support the next operational action.”
+
+Slide 16 — Future Claude Integration
+
+“The final phase that is still planned is the Claude NOC Copilot integration.
+
+Claude has not been implemented yet in the current project.
+
+The idea for the future phase is not to create a generic chatbot.
+
+Instead, Claude will receive structured evidence from the existing system, such as the selected alert, grid activity, baseline, historical comparisons, predictive risk, and pipeline health.
+
+It could then answer questions such as: explain this alert, why should I investigate this grid, is this condition persistent, or what evidence supports this risk signal?
+
+The important design principle is that Claude will reason over the existing evidence rather than inventing network values or replacing the analytics pipeline.
+
+This is the next phase planned for the project.”
+
+Slide 17 — Closing
+
+“To conclude, this project brings together the complete journey from raw telecom data to operational intelligence.
+
+We have the data engineering pipeline, spatial enrichment, analytics warehouse, FastAPI services, NOC dashboard, hotspot and alert monitoring, anomaly detection, predictive risk, historical and comparison workflows, and pipeline health.
+
+The current platform provides both technical depth and an operator-friendly experience.
+
+The next major step is to integrate Claude as an evidence-grounded NOC Copilot, which can help operators investigate and understand the signals already produced by the platform.
+
+Thank you.”
